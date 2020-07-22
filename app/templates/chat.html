@@ -42,7 +42,7 @@
             var socket;
 
             document.addEventListener('DOMContentLoaded', () => {
-                socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
+                socket = io.connect('https://' + document.domain + ':' + location.port + '/chat');
                 //socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
                 socket.on('connect', function() {
