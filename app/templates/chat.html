@@ -1,0 +1,104 @@
+<html>
+    <head>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/styles.css" rel="stylesheet">
+        <title>Flask-SocketIO-Chat: {{ room }}</title>
+
+        <!--- See this https://www.youtube.com/watch?v=zQDzNNt6xd4 --->
+
+
+    </head>
+    <body>
+
+
+    <div class="container-fluid pt-3">
+
+        <div class="col-sm-6" >
+
+
+
+        <h4>Flask-SocketIO-Chat: {{ name }} in channel {{ room }}</h4>
+        <textarea style="padding-left:10px" id="chat" cols="80" rows="12" readonly></textarea><br><br>
+        <input id="text" size="80" placeholder="Enter your message here"><br><br>
+
+        <!--- <a href="#" onclick="leave_room();">Leave this room</a> --->
+
+        <input type="button" class="myButton" id="leavRoomButton" name="leavRoomButton" value="Leave This Room">
+
+
+        </div>
+
+
+
+    </div>
+
+    </body>
+
+
+
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+
+        <script type="text/javascript" charset="utf-8">
+            var socket;
+
+            document.addEventListener('DOMContentLoaded', () => {
+                socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
+                //socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+                socket.on('connect', function() {
+                    socket.emit('joined', {});
+                });
+
+
+                socket.on('status', data => {
+                   document.querySelector('#chat').value = document.querySelector('#chat').value + data.msg + '\n'
+                   var y = document.querySelector('#chat').scrollHeight;
+                   document.querySelector('#chat').scrollTop = document.querySelector('#chat').scrollTop + y
+                });
+
+
+                socket.on('message', data => {
+                   document.querySelector('#chat').value = document.querySelector('#chat').value + data.msg + '\n'
+                   var y = document.querySelector('#chat').scrollHeight;
+                   document.querySelector('#chat').scrollTop = document.querySelector('#chat').scrollTop + y
+                });
+
+
+
+
+                document.querySelector('#text').addEventListener("keydown", function(e) {
+                   var code = e.keyCode || e.which;
+                   if (code == 13) {
+                      if (document.querySelector('#text').value.length > 0) {
+                         text = document.querySelector('#text').value
+                         document.querySelector('#text').value = ""
+                         socket.emit('text', {msg: text});
+                      }
+                   }
+                });
+
+
+                document.querySelector('#leavRoomButton').addEventListener("click", function() {
+                   leave_room();
+                });
+
+
+
+
+
+            });
+
+            function leave_room() {
+                socket.emit('left', {}, function() {
+                    socket.disconnect();
+
+                    // go back to the login page
+                    window.location.href = "{{ url_for('main.index') }}";
+                });
+            }
+
+        </script>
+
+
+
+</html>
