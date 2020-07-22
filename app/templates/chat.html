@@ -2,38 +2,6 @@
     <head>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
         <link href="/static/styles.css" rel="stylesheet">
-        <title>Flask-SocketIO-Chat: {{ room }}</title>
-
-        <!--- See this https://www.youtube.com/watch?v=zQDzNNt6xd4 --->
-
-
-    </head>
-    <body>
-
-
-    <div class="container-fluid pt-3">
-
-        <div class="col-sm-6" >
-
-
-
-        <h4>Flask-SocketIO-Chat: {{ name }} in channel {{ room }}</h4>
-        <textarea style="padding-left:10px" id="chat" cols="80" rows="12" readonly></textarea><br><br>
-        <input id="text" size="80" placeholder="Enter your message here"><br><br>
-
-        <!--- <a href="#" onclick="leave_room();">Leave this room</a> --->
-
-        <input type="button" class="myButton" id="leavRoomButton" name="leavRoomButton" value="Leave This Room">
-
-
-        </div>
-
-
-
-    </div>
-
-    </body>
-
 
 
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
@@ -42,8 +10,8 @@
             var socket;
 
             document.addEventListener('DOMContentLoaded', () => {
-                socket = io.connect('https://' + document.domain + ':' + location.port + '/chat');
-                //socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+                //socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
+                socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + '/chat');
 
                 socket.on('connect', function() {
                     socket.emit('joined', {});
@@ -98,6 +66,43 @@
             }
 
         </script>
+
+
+
+
+        <title>Flask-SocketIO-Chat: {{ room }}</title>
+
+        <!--- See this https://www.youtube.com/watch?v=zQDzNNt6xd4 --->
+
+
+    </head>
+    <body>
+
+
+    <div class="container-fluid pt-3">
+
+        <div class="col-sm-6" >
+
+
+
+        <h4>Flask-SocketIO-Chat: {{ name }} in channel {{ room }}</h4>
+        <textarea style="padding-left:10px" id="chat" cols="80" rows="12" readonly></textarea><br><br>
+        <input id="text" size="80" placeholder="Enter your message here"><br><br>
+
+        <!--- <a href="#" onclick="leave_room();">Leave this room</a> --->
+
+        <input type="button" class="myButton" id="leavRoomButton" name="leavRoomButton" value="Leave This Room">
+
+
+        </div>
+
+
+
+    </div>
+
+    </body>
+
+
 
 
 

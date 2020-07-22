@@ -16,6 +16,9 @@ def joined(message):
 def text(message):
     """Sent by a client when the user entered a new message.
     The message is sent to all people in the room."""
+    
+    # print(f"\n\nin route text: message = {message}, name={session.get('name')}, room = {session.get('room')}\n\n ")
+    
     room = session.get('room')
     emit('message', {'msg': session.get('name') + ':' + message['msg']}, room=room)
 
