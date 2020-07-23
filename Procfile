@@ -1,1 +1,1 @@
-web: flask db upgrade; flask translate compile; gunicorn chat:app
+web: gunicorn --worker-class socketio.sgunicorn.GeventSocketIOWorker --log-file=- chat:app
