@@ -113,7 +113,7 @@ main img
   border: 1px solid #BFBFBF;
   background-color: white;
   box-shadow: 7px 7px 5px #aaaaaa;
-   margin: 10px;
+  margin: 10px;
 }
 
 
@@ -135,8 +135,9 @@ div.scroll {
                 padding:4px; 
                 background-color: white; 
                 width: 850px; 
-                min-height: 300px; 
-                max-height: 300px; 
+                height: 0px
+                min-height: 0px; 
+                max-height: 0px; 
                 overflow-x: hidden; 
                 overflow-y: auto; 
                 text-align:justify; 

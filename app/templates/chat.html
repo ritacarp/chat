@@ -30,6 +30,29 @@
 
                 socket.on('connect', function() {
                     socket.emit('joined', {});
+
+                    bodyHeight = document.body.offsetHeight
+                    windowHeight = window.innerHeight
+                    navBarHeight = document.querySelector('#navBar').offsetHeight
+                    introHeight = document.querySelector('#intro').offsetHeight
+                    textHeight = document.querySelector('#text').offsetHeight
+                    buttonHeight = document.querySelector('#leavRoomButtonDiv').offsetHeight
+
+                    console.log("Height of the HTML body =" + bodyHeight);
+                    console.log("Window height =" + windowHeight);
+                    console.log("navBar Height =" + navBarHeight);
+                    console.log("intro Height =" + introHeight);
+                    console.log("text Height =" + textHeight);
+                    console.log("button Height =" + buttonHeight);
+                    // The 30 in the equation is for the post padding and margin
+                    postsHeight = windowHeight - (navBarHeight + introHeight + textHeight + buttonHeight + 30)
+                    console.log("posts Height =" + postsHeight);
+                    document.querySelector('div#posts').style.height= postsHeight;
+                    document.querySelector('div#posts').style.minHeight= postsHeight;
+                    document.querySelector('div#posts').style.maxHeight= postsHeight;
+                    console.log("Set id posts height to " + postsHeight)
+
+
                 });
 
 
@@ -179,7 +202,7 @@
 
 
 
-        <h5>Rita Chat: {{ name }} in channel {{ room }}</h5>
+        <h5 id="intro">Rita Chat: {{ name }} in channel {{ room }}</h5>
 
 
                 <div id="posts" class="scroll">
@@ -188,12 +211,13 @@
         <!--- <textarea style="padding-left:10px" id="chat" cols="80" rows="12" readonly></textarea><br><br> --->
 
 
-        <input id="text" style="width:800" maxlength="75" placeholder="Enter your message here"><br><br>
+        <input id="text" style="width:800;" maxlength="75" placeholder="Enter your message here">
 
         <!--- <a href="#" onclick="leave_room();">Leave this room</a> --->
 
+        <div id="leavRoomButtonDiv" style="padding-top:10px">
         <input type="button" class="myButton" id="leavRoomButton" name="leavRoomButton" value="Leave This Room">
-
+        </div>
 
         </div>
 
