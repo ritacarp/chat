@@ -3,9 +3,27 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
         <link href="/static/Fasticon-Avartar-Girls-Girl-8.ico" rel="icon">
         <link href="/static/styles.css" rel="stylesheet">
-        <title>Flask-SocketIO-Chat</title>
+        <title>Rita Chat: {{ title }}</title>
     </head>
     <body>
+
+        <nav class="navbar navbar-expand-md navbar-light bg-light border"  id="navBar">
+            <a class="navbar-brand" href="/"><span style="font-weight:bold"><span class="text-primary">R</span><span class="text-danger">I</span><span style="color:gold">T</span><span class="text-success">A</span> <span class="text-danger">Chats</span></span></a>
+            <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbar">
+                {% if name and name != ""  %}
+                    <ul class="navbar-nav ml-auto mt-2">
+                        <li class="nav-item">Welcome, <span id="thisUser">{{ name }}</span> to Channel {{ room }}</li>
+                    </ul>
+                {% endif %}
+            </div>
+
+
+
+        </nav>
 
     <div class="container-fluid pt-3">
       <div class="row">
@@ -13,11 +31,29 @@
         <div class="col-sm-6">
 
 
-        <h4>Flask-SocketIO-Chat</h4>
+        <h5>Please Log In</h5>
         <form method="POST">
             {{ form.hidden_tag() }}
-            {{ form.name.label }}: {{ form.name() }} {% for error in form.name.errors %}{{ error }}{% endfor %}<br>
-            {{ form.room.label }}: {{ form.room() }} {% for error in form.room.errors %}{{ error }}{% endfor %}<br>
+
+
+        <div class="form-group">
+            <!-- {{ form.name.label }}<br> -->
+            {{ form.name(size="32", autofocus=true, placeholder="Name", class="form-control form-control-sm") }}
+            {% for error in form.name.errors %}
+            <div style="color: red;">[{{ error }}]</div>
+            {% endfor %}
+        </div>
+
+
+        <div class="form-group">
+            <!-- {{ form.room.label }}<br> -->
+            {{ form.room(size="32", placeholder="Room", class="form-control form-control-sm") }}
+            {% for error in form.room.errors %}
+            <div style="color: red;">[{{ error }}]</div>
+            {% endfor %}
+       </div>
+
+
 
             <div>{{ form.submit(class="myButton") }}</div>
 

@@ -3,9 +3,21 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
         <link href="/static/Fasticon-Avartar-Girls-Girl-8.ico" rel="icon">
         <link href="/static/styles.css" rel="stylesheet">
-
+        <title>Rita Chat: {{ title }}</title>
 
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+
+        <script id="post" type="text/x-handlebars-template">
+            <div class="polaroid">
+                {% raw -%}
+                    <span class="{{ vClass }}">{{ who }}:</span> <span class="content">{{ contents }}</span>
+                {%- endraw %}
+                <button class="hide">Hide</button>
+            </div>
+        </script>
+
+
 
         <script type="text/javascript" charset="utf-8">
             var socket;
@@ -14,22 +26,63 @@
                 //socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
                 socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + '/chat');
 
+
+
                 socket.on('connect', function() {
                     socket.emit('joined', {});
                 });
 
 
                 socket.on('status', data => {
+
+                   /*
+                   alert("data.msg = " + data.msg)
+                   alert("data.sender = " + data.sender)
+                   alert("data.vClass = " + data.vClass)
+                   */
+
+                   /*
                    document.querySelector('#chat').value = document.querySelector('#chat').value + data.msg + '\n'
                    var y = document.querySelector('#chat').scrollHeight;
                    document.querySelector('#chat').scrollTop = document.querySelector('#chat').scrollTop + y
+                   */
+                   //alert("The session id is " + socket.id)
+
+
+                   add_post(data.sender,  data.msg, data.vClass)
+
+                   var y = document.querySelector('#posts').scrollHeight;
+                   document.querySelector('#posts').scrollTop = document.querySelector('#posts').scrollTop + y
+
+
+
+
                 });
 
 
                 socket.on('message', data => {
-                   document.querySelector('#chat').value = document.querySelector('#chat').value + data.msg + '\n'
+
+
+                   /*
+                   document.querySelector('#chat').value = document.querySelector('#chat').value + data.thisUser + ":  " + data.msg + '\n'
                    var y = document.querySelector('#chat').scrollHeight;
                    document.querySelector('#chat').scrollTop = document.querySelector('#chat').scrollTop + y
+                   */
+
+                   //alert("the server senders id is  " + data.sid + "; the client socket id is " + socket.id)
+
+
+                   if (data.sid == socket.id) {
+                      add_post(data.thisUser,  data.msg, "sender")
+                   } else {
+                      add_post(data.thisUser,  data.msg, "receiver")
+                   }
+
+                   var y = document.querySelector('#posts').scrollHeight;
+                   document.querySelector('#posts').scrollTop = document.querySelector('#posts').scrollTop + y
+
+
+
                 });
 
 
@@ -53,6 +106,14 @@
 
 
 
+               /*
+               add_post('rita',  'this is post 1', 'sender')
+               add_post('sammy', 'this is post 2', 'receiver')
+               add_post('shani', 'this is post 3', 'receiver')
+               add_post('system', 'this is post 3', 'system')
+               */
+
+
 
 
             });
@@ -66,18 +127,50 @@
                 });
             }
 
+            const post_template = Handlebars.compile(document.querySelector('#post').innerHTML);
+            function add_post(who, contents, vClass) {
+
+                // Create new post."
+                const post = post_template({'who': who, 'contents': contents, "vClass": vClass});
+
+                // Add post to DOM.
+                document.querySelector('#posts').innerHTML += post;
+            }
+
+
         </script>
 
 
 
 
-        <title>Flask-SocketIO-Chat: {{ room }}</title>
+
+
+
+
+
 
         <!--- See this https://www.youtube.com/watch?v=zQDzNNt6xd4 --->
 
 
     </head>
     <body>
+
+        <nav class="navbar navbar-expand-md navbar-light bg-light border" id="navBar">
+            <a class="navbar-brand" href="/"><span style="font-weight:bold"><span class="text-primary">R</span><span class="text-danger">I</span><span style="color:gold">T</span><span class="text-success">A</span> <span class="text-danger">Chats</span></span></a>
+            <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbar">
+                {% if name and name != ""  %}
+                    <ul class="navbar-nav ml-auto mt-2">
+                        <li class="nav-item">Welcome, <span id="thisUser">{{ name }}</span> to Channel {{ room }}</li>
+                    </ul>
+                {% endif %}
+            </div>
+
+
+        </nav>
 
 
     <div class="container-fluid pt-3">
@@ -86,9 +179,16 @@
 
 
 
-        <h4>Flask-SocketIO-Chat: {{ name }} in channel {{ room }}</h4>
-        <textarea style="padding-left:10px" id="chat" cols="80" rows="12" readonly></textarea><br><br>
-        <input id="text" size="80" placeholder="Enter your message here"><br><br>
+        <h5>Rita Chat: {{ name }} in channel {{ room }}</h5>
+
+
+                <div id="posts" class="scroll">
+		        </div>
+
+        <!--- <textarea style="padding-left:10px" id="chat" cols="80" rows="12" readonly></textarea><br><br> --->
+
+
+        <input id="text" style="width:800" maxlength="75" placeholder="Enter your message here"><br><br>
 
         <!--- <a href="#" onclick="leave_room();">Leave this room</a> --->
 

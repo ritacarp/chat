@@ -18,7 +18,7 @@ def index():
     elif request.method == 'GET':
         form.name.data = session.get('name', '')
         form.room.data = session.get('room', '')
-    return render_template('index.html', form=form)
+    return render_template('index.html', form=form, title="Log In", name="", room="")
 
 
 @bp.route('/chat')
@@ -27,6 +27,7 @@ def chat():
     the session."""
     name = session.get('name', '')
     room = session.get('room', '')
+    title= "Channel " + room
     if name == '' or room == '':
         return redirect(url_for('.index'))
-    return render_template('chat.html', name=name, room=room)
+    return render_template('chat.html', title=title, name=name, room=room)
