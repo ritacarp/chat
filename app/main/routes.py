@@ -10,6 +10,8 @@ from app.main.forms import LoginForm
 @bp.route('/', methods=['GET', 'POST'])
 def index():
     """Login form to enter a room."""
+    chatRoom = request.args.get('room')
+    print(f"the request room is {chatRoom}")
     form = LoginForm()
     if form.validate_on_submit():
         session['name'] = form.name.data
@@ -18,7 +20,8 @@ def index():
     elif request.method == 'GET':
         form.name.data = session.get('name', '')
         form.room.data = session.get('room', '')
-    return render_template('index.html', form=form, title="Log In", name="", room="")
+    # form.room = chatRoom
+    return render_template('index.html', form=form, title="Log In", name="", room=chatRoom)
 
 
 @bp.route('/chat')

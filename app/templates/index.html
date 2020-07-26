@@ -46,8 +46,7 @@
 
 
         <div class="form-group">
-            <!-- {{ form.room.label }}<br> -->
-            {{ form.room(size="32", placeholder="Room", class="form-control form-control-sm") }}
+            <input class="form-control form-control-sm" id="room" name="room" placeholder="Room" required size="32" type="text" value="{{room}}">
             {% for error in form.room.errors %}
             <div style="color: red;">[{{ error }}]</div>
             {% endfor %}

@@ -11,7 +11,7 @@ def joined(message):
     join_room(room)
     print(f"\n\n{session.get('name')} joined a room.  The session id is {request.sid}\n\n")
     #emit('status', {'msg': session.get('name') + ' has entered the room.'}, room=room)
-    emit('status', {'thisUser': session.get('name'), 'sender': 'System', 'vClass': 'system', 'msg': session.get('name') + ' has entered the room.'}, room=room)
+    emit('status', {'thisUser': session.get('name'), 'sender': 'System', 'vClass': 'system', 'msg': session.get('name') + ' has entered room ' + room + '.'}, room=room)
 
 
 
@@ -36,4 +36,4 @@ def left(message):
     room = session.get('room')
     leave_room(room)
     #emit('status', {'msg': session.get('name') + ' has left the room.'}, room=room)
-    emit('status', {'thisUser': who, 'sender': 'System', 'vClass': 'system','msg': session.get('name') + ' has left the room.'}, room=room)
+    emit('status', {'thisUser': who, 'sender': 'System', 'vClass': 'system','msg': session.get('name') + ' has left room ' + room + '.'}, room=room)
