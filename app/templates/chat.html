@@ -35,7 +35,7 @@
                     navBarHeight = document.querySelector('#navBar').offsetHeight
                     introHeight = document.querySelector('#intro').offsetHeight
                     textHeight = document.querySelector('#text').offsetHeight
-                    buttonHeight = document.querySelector('#leavRoomButtonDiv').offsetHeight
+                    buttonHeight = document.querySelector('#leaveRoomButtonDiv').offsetHeight
 
                     console.log("Height of the HTML body =" + bodyHeight);
                     console.log("Window height =" + windowHeight);
@@ -126,7 +126,7 @@
                 });
 
 
-                document.querySelector('#leavRoomButton').addEventListener("click", function() {
+                document.querySelector('#leaveRoomButton').addEventListener("click", function() {
                    leave_room();
                 });
 
@@ -233,8 +233,8 @@
 
         <!--- <a href="#" onclick="leave_room();">Leave this room</a> --->
 
-        <div id="leavRoomButtonDiv" style="padding-top:10px">
-        <input type="button" class="myButton" id="leavRoomButton" name="leavRoomButton" value="Leave This Room">
+        <div id="leaveRoomButtonDiv" style="padding-top:10px">
+        <input type="button" class="myButton" id="leaveRoomButton" name="leaveRoomButton" value="Leave This Room">
         </div>
 
         </div>

@@ -11,6 +11,8 @@ from app.main.forms import LoginForm
 def index():
     """Login form to enter a room."""
     chatRoom = request.args.get('room')
+    if chatRoom is None:
+       chatRoom="RitaChatRoom"
     print(f"the request room is {chatRoom}")
     form = LoginForm()
     if form.validate_on_submit():

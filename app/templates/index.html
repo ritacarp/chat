@@ -4,6 +4,176 @@
         <link href="/static/Fasticon-Avartar-Girls-Girl-8.ico" rel="icon">
         <link href="/static/styles.css" rel="stylesheet">
         <title>Rita Chat: {{ title }}</title>
+
+
+        <script type="text/javascript" charset="utf-8">
+           document.addEventListener('DOMContentLoaded', () => {
+
+
+
+              document.querySelector('#enterRoomButton').addEventListener("click", function() {
+
+                 newRoomList = ""
+                 var x = document.getElementById('roomList');
+                 for (var i = 0; i < x.length; i++) {
+                    if (x[i].value != "") {
+                       if (newRoomList != "") {
+                          newRoomList = newRoomList + "~"
+                       }
+                       newRoomList = newRoomList + x[i].value
+                    }
+                 }
+
+
+                 /*
+                 var savedRoomsString = localStorage.getItem('savedRooms')
+
+                 var savedRoomsList = ""
+                 if (savedRoomsString) {
+                    var savedRoomsList = savedRoomsString.split("~");
+                 }
+                 thisRoom = document.querySelector('#room').value
+
+
+                 newRoomList = ""
+                 if (thisRoom) {newRoomList = thisRoom}
+
+                 for (i = 0; i < savedRoomsList.length; i++) {
+                    if (savedRoomsList[i] != thisRoom) {
+                       if (newRoomList != "") {
+                          newRoomList = newRoomList + "~"
+                       }
+                       newRoomList = newRoomList + savedRoomsList[i]
+                    }
+                 }
+                 */
+
+                 localStorage.setItem('savedRooms', newRoomList);
+
+
+                 document.forms[0].submit();
+              });
+
+
+              document.querySelector('#roomList').addEventListener("change", function() {
+                 val = this.value
+                 document.querySelector('#room').value = val
+                 if (! val) {
+                    document.querySelector('#enterRoomButton').disabled = true
+                    document.querySelector('#enterRoomButton').value = "Please select a name and a room"
+                 } else {
+                     document.querySelector('#enterRoomButton').disabled = false
+                     document.querySelector('#enterRoomButton').value = "Enter Room " + val
+                 }
+
+                 enableDisable()
+              });
+
+              document.querySelector('#name').addEventListener("input", function(e) {
+                 val = this.value
+                 if (document.querySelector('#name').value.length == 0) {
+                    document.querySelector('#enterRoomButton').disabled = true
+                    document.querySelector('#enterRoomButton').value = "Please select a name and a room"
+                 } else {
+                     document.querySelector('#enterRoomButton').disabled = false
+                     if (document.querySelector('#room').value.length > 0) {
+                        document.querySelector('#enterRoomButton').value = "Enter Room " + document.querySelector('#room').value
+                     }
+
+                 }
+                 enableDisable()
+              })
+
+
+              document.querySelector('#room').addEventListener("focusout", function(e) {
+                 val = this.value
+                 if (document.querySelector('#room').value.length == 0) {
+                    document.querySelector('#enterRoomButton').disabled = true
+                    document.querySelector('#enterRoomButton').value = "Please select a name and a room"
+                    document.querySelector('#roomList').value = "";
+                 } else {
+                     document.querySelector('#enterRoomButton').disabled = false
+                     document.querySelector('#enterRoomButton').value = "Enter Room " + val
+
+                     var x = document.getElementById('roomList');
+                     var found = false;
+                     for (var i = 0; i < x.length; i++) {
+                        if (x[i] == val) {
+                           found = true;
+                           document.querySelector('#roomList').value = val
+                           break
+                        }
+                     }
+                     if (! found) {
+                        var opt = document.createElement('option');
+                        opt.appendChild( document.createTextNode(val) );
+                        opt.value = val;
+                        x.appendChild(opt);
+                     }
+                 }
+
+                 enableDisable()
+              });
+
+              doOnLoad()
+
+
+           });
+
+
+
+        </script>
+
+        <script>
+           function doOnLoad() {
+
+
+              var savedRoomsString = localStorage.getItem('savedRooms')
+
+              var savedRooms = ""
+              if (savedRoomsString) {
+                 savedRooms = savedRoomsString.split("~");
+              }
+
+              var str='';
+
+              str += '<option value="" selected>Please select a room</option>'
+
+              {% if room and room != ""  %}
+                 str += '<option value="{{room}}" selected>{{room}}</option>';
+              {% endif %}
+
+              if (savedRooms) {
+                 for(let i=0; i<savedRooms.length; i++) {
+                    if (savedRooms[i] != '{{room}}') {
+                       str += '<option value="' + savedRooms[i] + '" >' + savedRooms[i] + '</option>';
+                    }
+                 }
+
+              }
+
+ 		      var my_list=document.getElementById("roomList");
+              my_list.innerHTML = str;
+
+              enableDisable()
+
+           }
+
+
+           function enableDisable() {
+
+              if (document.querySelector('#name').value.length == 0 || document.querySelector('#room').value.length == 0) {
+                    document.querySelector('#enterRoomButton').disabled = true
+                    document.querySelector('#enterRoomButton').value = "Please select a name and a room"
+                    if (document.querySelector('#room').value.length == 0) {
+                       document.querySelector('#roomList').value = "";
+                    }
+              }
+           }
+        </script>
+
+
+
     </head>
     <body>
 
@@ -36,6 +206,7 @@
             {{ form.hidden_tag() }}
 
 
+
         <div class="form-group">
             <!-- {{ form.name.label }}<br> -->
             {{ form.name(size="32", autofocus=true, placeholder="Name", class="form-control form-control-sm") }}
@@ -44,17 +215,30 @@
             {% endfor %}
         </div>
 
+       <!--- room list drop down --->
+       <div class="form-group">
+          <select class="form-control form-control-sm" name="roomList" id="roomList">
+          </select>
+          <label for="roomList"><small><span style="color:blue;">Select from a list of your saved rooms</span></small></label>
+       </div>
 
+
+        <!--- room text box --->
         <div class="form-group">
-            <input class="form-control form-control-sm" id="room" name="room" placeholder="Room" required size="32" type="text" value="{{room}}">
+            <input class="form-control form-control-sm" id="room" name="room" placeholder="Please select a room, or enter a new room here" required size="32" type="text" value="{{room}}">
+            <label for="room"><small><span style="color:blue;">Or use this field to enter a new room</span></small></label>
             {% for error in form.room.errors %}
             <div style="color: red;">[{{ error }}]</div>
             {% endfor %}
+
        </div>
 
 
 
-            <div>{{ form.submit(class="myButton") }}</div>
+
+            <!--- <div>{{ form.submit(class="myButton") }}</div> --->
+
+            <div><input type="button" class="myButton" id="enterRoomButton" name="enterRoomButton" value="Enter Room {{ room }}"><div>
 
         </form>
 
