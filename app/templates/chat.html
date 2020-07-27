@@ -218,7 +218,7 @@
             <div class="collapse navbar-collapse" id="navbar">
                 {% if name and name != ""  %}
                     <ul class="navbar-nav ml-auto mt-2">
-                        <li class="nav-item">Welcome, <span id="thisUser">{{ name }}</span> to Channel {{ room }}</li>
+                        <li class="nav-item">Welcome, <span id="thisUser">{{ name }}</span> to Room {{ room }}</li>
                     </ul>
                 {% endif %}
             </div>
@@ -233,8 +233,7 @@
 
 
 
-        <h5 id="intro">Rita Chat: {{ name }} in channel {{ room }}</h5>
-
+        <span><h6 id="intro">Room: {{ room }} <small><a href="{{ url_for('email.invite_to_chat') }}" target="_blank">invite a friend to chat</a></small></h6></span>
 
                 <div id="posts" class="scroll">
 		        </div>

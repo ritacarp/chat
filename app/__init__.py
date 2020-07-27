@@ -23,6 +23,9 @@ def create_app(config_class=Config, debug=False):
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
+    from app.email import bp as email_bp
+    app.register_blueprint(email_bp, url_prefix='/email')
+
 
     socketio.init_app(app)
     bootstrap.init_app(app)

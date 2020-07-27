@@ -1,0 +1,7 @@
+Hi,
+
+Please join me in a chat at this address:
+
+{{ chatURL }}
+
+Looking forward to chatting with you.
