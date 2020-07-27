@@ -68,20 +68,32 @@ main img
 	background:linear-gradient(to bottom, #ffab23 5%, #ffec64 100%);
 	background-color:#ffab23;
 }
+
 .myButton:active {
 	position:relative;
 	top:1px;
 }
 
+
+
 .myButton:disabled {
-  box-shadow: 0px 1px 0px 0px #999999;
-  background:linear-gradient(to bottom, #555555 5%, #999999 100%);
-  background-color:#333333;
-  border-radius:6px;
-  border:1px solid #999999;
-  color:#ffffff;
-  text-shadow:0px 1px 0px #999999;
+  opacity: 0.60; 
+  background-color:#ffec64;
+  background:linear-gradient(to bottom, #ffec64 5%, #ffec64 100%);
   cursor:default;
+}
+
+.myButton:disabled:active {
+    opacity: 0.60;
+    background-color:#ffec64;
+    background:linear-gradient(to bottom, #ffec64 5%, #ffec64 100%);
+    cursor:default;}
+
+.myButton:disabled:hover {
+    opacity: 0.60;
+    background-color:#ffec64;
+    background:linear-gradient(to bottom, #ffec64 5%, #ffec64 100%);
+    cursor:default;
 }
 
 
