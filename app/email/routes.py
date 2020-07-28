@@ -79,16 +79,16 @@ def gmail_send_email(subject, sender, recipients, text_body, html_body):
     message.attach(part1)
     message.attach(part2)
 
-    context = ssl.create_default_context()
-    # context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-    # connection = smtplib.SMTP(smtp_server, port)
-    # connection.starttls(context=context)
-    # connection.login(sender_email, password)
-    # connection.sendmail(sender_email, receiver_email, message.as_string())
+    #context = ssl.create_default_context()
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+    connection = smtplib.SMTP(smtp_server, port)
+    connection.starttls(context=context)
+    connection.login(sender_email, password)
+    connection.sendmail(sender_email, receiver_email, message.as_string())
     
-    with smtplib.SMTP_SSL(smtp_server, 465, context=context) as server:
-        server.login(sender_email, password)
-        server.sendmail(sender_email, receiver_email, message.as_string())
+    # with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+    #     server.login(sender_email, password)
+    #     server.sendmail(sender_email, receiver_email, message.as_string())
         
 
 
