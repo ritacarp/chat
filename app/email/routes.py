@@ -1,4 +1,5 @@
-from flask import render_template, flash, redirect, request, url_for, session
+from flask_mail import Message
+from flask import render_template, flash, redirect, request, url_for, session, current_app
 from app.email import bp
 from app.email.forms import ChatInvitationForm
 
