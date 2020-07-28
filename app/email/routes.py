@@ -45,12 +45,14 @@ def send_chat_invitation_email(from_email, to_email, chatURL):
     recipients=[]
     toList = to_email.split(",")
     for sendTo in toList:
-        gmail_send_email('Invitation to chat with me',
-                sender=from_email,
-                recipients=sendTo.strip(),
-                text_body=render_template('email/email_chat_invitation.txt',chatURL=chatURL),
-                html_body=render_template('email/email_chat_invitation.html',chatURL=chatURL)
-                )
+        recipients.append(sendTo)
+        
+    gmail_send_email('Invitation to chat with me',
+            sender=from_email,
+            recipients=recipients,
+            text_body=render_template('email/email_chat_invitation.txt',chatURL=chatURL),
+            html_body=render_template('email/email_chat_invitation.html',chatURL=chatURL)
+            )
 
 
 def gmail_send_email(subject, sender, recipients, text_body, html_body):
@@ -67,7 +69,8 @@ def gmail_send_email(subject, sender, recipients, text_body, html_body):
     message = MIMEMultipart("alternative")
     message["Subject"] = subject
     message["From"] = sender_email
-    message["To"] = receiver_email
+    # message["To"] = [receiver_email]
+    message["To"] = ', '.join(receiver_email)
 
     part1 = MIMEText(text_body, "plain")
     part2 = MIMEText(html_body, "html")
