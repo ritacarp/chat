@@ -8,6 +8,25 @@
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 
 
+        <script type="text/javascript" charset="utf-8">
+           document.addEventListener('DOMContentLoaded', () => {
+
+              doOnLoad()
+
+           });
+        </script>
+
+        <script>
+             function doOnLoad() {
+                var savedDisplayName = localStorage.getItem('savedDisplayName')
+                if (savedDisplayName) {
+                   document.querySelector('#from_name').value = savedDisplayName
+                }
+
+             }
+        </script>
+
+
     </head>
     <body>
 
@@ -39,7 +58,7 @@
         {{ form.hidden_tag() }}
 
         <div class="form-group">
-            <!-- {{ form.from_name.label }}<br> -->
+            <span style="color:blue"><h6><small>From</small></h6></span>
             {{ form.from_name(size="32", autofocus=true, placeholder="From Name", class="form-control form-control-sm") }}
             {% for error in form.from_name.errors %}
             <div style="color: red;">[{{ error }}]</div>
@@ -56,6 +75,7 @@
         </div>
 
 
+        <span style="color:blue"><h6><small>To</small></h6></span>
         <div class="form-group">
             <!-- {{ form.to_names.label }}<br> -->
             {{ form.to_names(size="32", autofocus=true, placeholder="To Names", class="form-control form-control-sm") }}

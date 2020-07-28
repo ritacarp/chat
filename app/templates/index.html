@@ -49,6 +49,7 @@
                  */
 
                  localStorage.setItem('savedRooms', newRoomList);
+                 localStorage.setItem('savedDisplayName', document.querySelector('#name').value);
 
 
                  document.forms[0].submit();
@@ -60,7 +61,7 @@
                  document.querySelector('#room').value = val
                  if (! val) {
                     document.querySelector('#enterRoomButton').disabled = true
-                    document.querySelector('#enterRoomButton').value = "Please select a name and a room"
+                    document.querySelector('#enterRoomButton').value = "Please select a display name and a room"
                  } else {
                      document.querySelector('#enterRoomButton').disabled = false
                      document.querySelector('#enterRoomButton').value = "Enter Room " + val
@@ -73,7 +74,7 @@
                  val = this.value
                  if (document.querySelector('#name').value.length == 0) {
                     document.querySelector('#enterRoomButton').disabled = true
-                    document.querySelector('#enterRoomButton').value = "Please select a name and a room"
+                    document.querySelector('#enterRoomButton').value = "Please select a display name and a room"
                  } else {
                      document.querySelector('#enterRoomButton').disabled = false
                      if (document.querySelector('#room').value.length > 0) {
@@ -89,7 +90,7 @@
                  val = this.value
                  if (document.querySelector('#room').value.length == 0) {
                     document.querySelector('#enterRoomButton').disabled = true
-                    document.querySelector('#enterRoomButton').value = "Please select a name and a room"
+                    document.querySelector('#enterRoomButton').value = "Please select a display name and a room"
                     document.querySelector('#roomList').value = "";
                  } else {
                      document.querySelector('#enterRoomButton').disabled = false
@@ -155,6 +156,11 @@
  		      var my_list=document.getElementById("roomList");
               my_list.innerHTML = str;
 
+              var savedDisplayName = localStorage.getItem('savedDisplayName')
+              if (savedDisplayName) {
+                 document.querySelector('#name').value = savedDisplayName
+              }
+
               enableDisable()
 
            }
@@ -164,7 +170,7 @@
 
               if (document.querySelector('#name').value.length == 0 || document.querySelector('#room').value.length == 0) {
                     document.querySelector('#enterRoomButton').disabled = true
-                    document.querySelector('#enterRoomButton').value = "Please select a name and a room"
+                    document.querySelector('#enterRoomButton').value = "Please select a display name and a room"
                     if (document.querySelector('#room').value.length == 0) {
                        document.querySelector('#roomList').value = "";
                     }
@@ -201,7 +207,7 @@
         <div class="col-sm-6">
 
 
-        <h5>Please Log In</h5>
+        <h5>Please select a Display Name and Room</h5>
         <form method="POST">
             {{ form.hidden_tag() }}
 
@@ -209,7 +215,7 @@
 
         <div class="form-group">
             <!-- {{ form.name.label }}<br> -->
-            {{ form.name(size="32", autofocus=true, placeholder="Name", class="form-control form-control-sm") }}
+            {{ form.name(size="32", autofocus=true, placeholder="Display Name", class="form-control form-control-sm") }}
             {% for error in form.name.errors %}
             <div style="color: red;">[{{ error }}]</div>
             {% endfor %}
