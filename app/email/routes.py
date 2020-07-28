@@ -82,7 +82,8 @@ def gmail_send_email(subject, sender, recipients, text_body, html_body):
     context = ssl.create_default_context()
     # context = ssl.SSLContext(ssl.PROTOCOL_TLS)
     connection = smtplib.SMTP(smtp_server, port)
-    connection.starttls(context=context)
+    # connection.starttls(context=context)
+    connection.starttls()
     connection.login(sender_email, password)
     connection.sendmail(sender_email, receiver_email, message.as_string())
     
