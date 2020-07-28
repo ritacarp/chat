@@ -27,12 +27,14 @@ def invite_to_chat():
         chatURL = o.scheme + "://" + o.hostname + "/?room=" + room 
         print(f"the url in route email.invite_to_chat is {thisURL};  the chat url is {chatURL}")
 
+        from_name = form.from_name.data
         from_email = form.from_email.data
-        to_email = form.to_email.data
-        send_chat_invitation_email(from_email,to_email,chatURL)
+        to_names = form.to_names.data
+        to_emails = form.to_emails.data
+        send_chat_invitation_email(from_name, from_email, to_names, to_emails, chatURL)
         flash('Your invitation has been sent.  Please close this tab to continue',"success")
         return render_template('email/chat_invitation_sent.html',
-                           title='Invitation sent', name=name, room=room )
+                           title='Invitation sent', name=name, room=room, toNames=to_names, toEmails=to_emails )
         
 
         
@@ -40,18 +42,18 @@ def invite_to_chat():
                            title='Invite to chat', form=form, name=name, room=room )
 
 
-def send_chat_invitation_email(from_email, to_email, chatURL):
+def send_chat_invitation_email(from_name, from_email, to_names, to_emails, chatURL):
     
     recipients=[]
-    toList = to_email.split(",")
+    toList = to_emails.split(",")
     for sendTo in toList:
         recipients.append(sendTo)
         
     gmail_send_email('Invitation to chat with me',
             sender=from_email,
             recipients=recipients,
-            text_body=render_template('email/email_chat_invitation.txt',chatURL=chatURL),
-            html_body=render_template('email/email_chat_invitation.html',chatURL=chatURL)
+            text_body=render_template('email/email_chat_invitation.txt',chatURL=chatURL, fromName=from_name,  toNames=to_names,),
+            html_body=render_template('email/email_chat_invitation.html',chatURL=chatURL,fromName=from_name, toNames=to_names)
             )
 
 

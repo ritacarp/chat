@@ -38,10 +38,18 @@
 
         {{ form.hidden_tag() }}
 
+        <div class="form-group">
+            <!-- {{ form.from_name.label }}<br> -->
+            {{ form.from_name(size="32", autofocus=true, placeholder="From Name", class="form-control form-control-sm") }}
+            {% for error in form.from_name.errors %}
+            <div style="color: red;">[{{ error }}]</div>
+            {% endfor %}
+        </div>
+
 
         <div class="form-group">
             <!-- {{ form.from_email.label }}<br> -->
-            {{ form.from_email(size="32", autofocus=true, placeholder="From", class="form-control form-control-sm") }}
+            {{ form.from_email(size="32", autofocus=true, placeholder="From Email", class="form-control form-control-sm") }}
             {% for error in form.from_email.errors %}
             <div style="color: red;">[{{ error }}]</div>
             {% endfor %}
@@ -49,12 +57,24 @@
 
 
         <div class="form-group">
-            <!-- {{ form.to_email.label }}<br> -->
-            {{ form.to_email(size="32", autofocus=true, placeholder="To, separate multiple emails with commas", class="form-control form-control-sm") }}
-            {% for error in form.to_email.errors %}
+            <!-- {{ form.to_names.label }}<br> -->
+            {{ form.to_names(size="32", autofocus=true, placeholder="To Names", class="form-control form-control-sm") }}
+            {% for error in form.to_names.errors %}
             <div style="color: red;">[{{ error }}]</div>
             {% endfor %}
         </div>
+
+
+        <div class="form-group">
+            <!-- {{ form.to_emails.label }}<br> -->
+            {{ form.to_emails(size="32", autofocus=true, placeholder="To Emails, separate multiple emails with commas", class="form-control form-control-sm") }}
+            {% for error in form.to_emails.errors %}
+            <div style="color: red;">[{{ error }}]</div>
+            {% endfor %}
+        </div>
+
+
+
 
 <div>{{ form.submit(class="myButton") }}</div>
 

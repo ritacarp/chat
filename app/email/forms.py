@@ -6,8 +6,10 @@ import re
 
 
 class ChatInvitationForm(FlaskForm):
-    from_email = StringField('From', validators=[DataRequired()])
-    to_email = StringField('To', validators=[DataRequired()])
+    from_name = StringField('From Name', validators=[DataRequired()])
+    from_email = StringField('From Email', validators=[DataRequired()])
+    to_names = StringField('To Names', validators=[DataRequired()])
+    to_emails = StringField('To Emails', validators=[DataRequired()])
     submit = SubmitField('Send invitation to chat')
 
 
@@ -22,7 +24,7 @@ class ChatInvitationForm(FlaskForm):
             # raise ValidationError('From Email address is not valid')
 
 
-    def validate_to_email(form, field):
+    def validate_to_emails(form, field):
         # pass the regular expression 
         # and the string in search() method 
         isValid = True
