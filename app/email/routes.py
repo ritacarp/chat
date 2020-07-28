@@ -1,4 +1,3 @@
-from flask_mail import Message
 from flask import render_template, flash, redirect, request, url_for, session, current_app
 from app.email import bp
 from app.email.forms import ChatInvitationForm
@@ -80,12 +79,12 @@ def gmail_send_email(subject, sender, recipients, text_body, html_body):
     message.attach(part1)
     message.attach(part2)
 
-    with current_app.app_context():
-        context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-        connection = smtplib.SMTP(smtp_server, port)
-        connection.starttls(context=context)
-        connection.login(sender_email, password)
-        connection.sendmail(sender_email, receiver_email, message.as_string())
+    context = ssl.create_default_context()
+    # context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+    connection = smtplib.SMTP(smtp_server, port)
+    connection.starttls(context=context)
+    connection.login(sender_email, password)
+    connection.sendmail(sender_email, receiver_email, message.as_string())
 
 
     
