@@ -80,11 +80,12 @@ def gmail_send_email(subject, sender, recipients, text_body, html_body):
     message.attach(part1)
     message.attach(part2)
 
-    context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-    connection = smtplib.SMTP(smtp_server, port)
-    connection.starttls(context=context)
-    connection.login(sender_email, password)
-    connection.sendmail(sender_email, receiver_email, message.as_string())
+    with app.app_context():
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+        connection = smtplib.SMTP(smtp_server, port)
+        connection.starttls(context=context)
+        connection.login(sender_email, password)
+        connection.sendmail(sender_email, receiver_email, message.as_string())
 
 
     
