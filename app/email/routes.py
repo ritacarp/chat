@@ -41,8 +41,6 @@ def invite_to_chat():
 
 
 def send_chat_invitation_email(from_email, to_email, chatURL):
-    print(f"\n\n1)  chat_invitation_email:  from = {from_email}")
-    print(f"\n\n2)  chat_invitation_email:  email server =  {os.environ.get('MAIL_SERVER')}")
     
     recipients=[]
     toList = to_email.split(",")
@@ -79,17 +77,19 @@ def gmail_send_email(subject, sender, recipients, text_body, html_body):
     message.attach(part1)
     message.attach(part2)
 
-    context = ssl.create_default_context()
-    # context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+    #context = ssl.create_default_context()
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS)
     connection = smtplib.SMTP(smtp_server, port)
-    # connection.starttls(context=context)
-    connection.starttls()
+    connection.starttls(context=context)
     connection.login(sender_email, password)
+
+    print(f"\n\n1)  gmail_send_email:  sender_email = {sender_email}")
+
+
     connection.sendmail(sender_email, receiver_email, message.as_string())
     
-    # with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
-    #     server.login(sender_email, password)
-    #     server.sendmail(sender_email, receiver_email, message.as_string())
+    print(f"\n\n2)  chat_invitation_email:  recipients =  {receiver_email}\n\n")
+
         
 
 
