@@ -20,7 +20,7 @@ def text(message):
     """Sent by a client when the user entered a new message.
     The message is sent to all people in the room."""
     
-    # print(f"\n\nin route text: message = {message}, name={session.get('name')}, room = {session.get('room')}\n\n ")
+    print(f"\n\nin route text: message = {message}, name={session.get('name')}, room = {session.get('room')}\n\n ")
     print(f"\n\n{session.get('name')} sent a message.  The session id is {request.sid}\n\n")
     
     room = session.get('room')

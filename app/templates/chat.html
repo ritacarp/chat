@@ -30,6 +30,10 @@
                 socket.on('connect', function() {
                     socket.emit('joined', {});
 
+                    // Join room
+                    //socket.emit('join', {'username': username, 'room': room});
+
+
                     bodyHeight = document.body.offsetHeight
                     windowHeight = window.innerHeight
                     navBarHeight = document.querySelector('#navBar').offsetHeight

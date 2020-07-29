@@ -48,6 +48,8 @@
                  }
                  */
 
+                 // alert("1 enter room save rooms = " + newRoomList)
+
                  localStorage.setItem('savedRooms', newRoomList);
                  localStorage.setItem('savedDisplayName', document.querySelector('#name').value);
 
@@ -99,16 +101,20 @@
                      var x = document.getElementById('roomList');
                      var found = false;
                      for (var i = 0; i < x.length; i++) {
-                        if (x[i] == val) {
+                        // alert("Room list [" + i + "] = " + x[i].value + "; val = " + val)
+                        if (x[i].value == val) {
                            found = true;
+                           //alert("Room " + val + " was found, this value is selected")
                            document.querySelector('#roomList').value = val
                            break
                         }
                      }
-                     if (! found) {
+                     if (!found) {
+                        //alert("Room " + val + " was not found, adding option")
                         var opt = document.createElement('option');
                         opt.appendChild( document.createTextNode(val) );
                         opt.value = val;
+                        opt.selected = true;
                         x.appendChild(opt);
                      }
                  }
@@ -130,6 +136,7 @@
 
 
               var savedRoomsString = localStorage.getItem('savedRooms')
+              //alert("1) local storage saved room string = "+ savedRoomsString)
 
               var savedRooms = ""
               if (savedRoomsString) {
@@ -137,21 +144,39 @@
               }
 
               var str='';
+              var room = '{{room}}'
 
-              str += '<option value="" selected>Please select a room</option>'
+              str += '<option value="" '
+              if (room == "") {  str += ' selected ' }
+              str += '>Please select a room</option>'
 
+
+              /*
               {% if room and room != ""  %}
-                 str += '<option value="{{room}}" selected>{{room}}</option>';
+                 {# str += '<option value="{{room}}" selected>{{room}}</option>'; #}
               {% endif %}
+              */
 
+
+              found = false
               if (savedRooms) {
-                 for(let i=0; i<savedRooms.length; i++) {
-                    if (savedRooms[i] != '{{room}}') {
-                       str += '<option value="' + savedRooms[i] + '" >' + savedRooms[i] + '</option>';
-                    }
+                 for(var i=0; i<savedRooms.length; i++) {
+                    //alert("Current Room = " + '{{room}}' + "; room i = " + savedRooms[i])
+                    //if (savedRooms[i] != room) {
+                       //alert("Add room " + savedRooms[i])
+                       str += '<option value="' + savedRooms[i] + '"'
+                       if (savedRooms[i] == room) {
+                          str += ' selected '
+                          found = true
+                       }
+                       str += '>' + savedRooms[i] + '</option>';
+                    //}
                  }
 
               }
+              if (!found) { str += '<option value="{{room}}" selected>{{room}}</option>'; }
+
+              //alert("Current Room = " + '{{room}}' + "; str = " + str)
 
  		      var my_list=document.getElementById("roomList");
               my_list.innerHTML = str;

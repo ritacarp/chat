@@ -36,3 +36,4 @@ def chat():
     if name == '' or room == '':
         return redirect(url_for('.index'))
     return render_template('chat.html', title=title, name=name, room=room)
+    ##return render_template('chat_01.html', title=title, name=name, room=room)
