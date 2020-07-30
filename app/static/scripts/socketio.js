@@ -28,12 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const span_timestamp = document.createElement('span');
             const br = document.createElement('br')
             // Display user's own message
-            if (data.username == username) {
+            if (data.thisUser == username) {
                     p.setAttribute("class", "my-msg");
 
                     // Username
                     span_username.setAttribute("class", "my-username");
-                    span_username.innerText = data.username;
+                    span_username.innerText = data.thisUser;
 
                     // Timestamp
                     span_timestamp.setAttribute("class", "timestamp");
@@ -46,12 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.querySelector('#display-message-section').append(p);
             }
             // Display other users' messages
-            else if (typeof data.username !== 'undefined') {
+            else if (typeof data.thisUser !== 'undefined') {
                 p.setAttribute("class", "others-msg");
 
                 // Username
                 span_username.setAttribute("class", "other-username");
-                span_username.innerText = data.username;
+                span_username.innerText = data.thisUser;
 
                 // Timestamp
                 span_timestamp.setAttribute("class", "timestamp");

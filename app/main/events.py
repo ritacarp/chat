@@ -3,6 +3,7 @@ from flask_socketio import emit, join_room, leave_room
 from app import socketio
 
 
+
 @socketio.on('joined', namespace='/chat')
 def joined(message):
     """Sent by clients when they enter a room.
@@ -12,6 +13,23 @@ def joined(message):
     print(f"\n\n{session.get('name')} joined a room.  The session id is {request.sid}\n\n")
     #emit('status', {'msg': session.get('name') + ' has entered the room.'}, room=room)
     emit('status', {'thisEvent': 'joined', 'thisUser': session.get('name'), 'sender': 'System', 'vClass': 'system', 'msg': session.get('name') + ' has entered room ' + room + '.'}, room=room)
+
+
+
+@socketio.on('join', namespace='/chat')
+def on_join(data):
+    """User joins a room"""
+
+
+    session['room'] = data["room"]
+    room = session['room']
+    join_room(room)
+
+    print(f"\n\n function join:  {session.get('name')} joined room {session['room']}.  The session id is {request.sid}\n\n\n")
+
+    # Broadcast that new user has joined
+    emit('status', {'thisEvent': 'joined', 'thisUser': session.get('name'), 'sender': 'System', 'vClass': 'system', 'msg': session.get('name') + ' has entered room ' + room + '.'}, room=room)
+
 
 
 
@@ -34,6 +52,6 @@ def left(message):
     A status message is broadcast to all people in the room."""
     who = session.get('name')
     room = session.get('room')
-    leave_room(room)
     #emit('status', {'msg': session.get('name') + ' has left the room.'}, room=room)
     emit('status', {'thisEvent': 'left', 'thisUser': who, 'sender': 'System', 'vClass': 'system','msg': session.get('name') + ' has left room ' + room + '.'}, room=room)
+    leave_room(room)

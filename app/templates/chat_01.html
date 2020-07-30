@@ -20,6 +20,15 @@
 
 
 
+        <script id="post" type="text/x-handlebars-template">
+            <div class="polaroid">
+                {% raw -%}
+                    <span class="{{ vClass }}">{{ who }}:</span> <span class="content">{{ contents }}</span>
+                {%- endraw %}
+            </div>
+        </script>
+
+
         <script type="text/javascript" charset="utf-8">
             var socket;
 
@@ -27,6 +36,8 @@
                 //socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
                 socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + '/chat');
 
+    // Retrieve username
+    const username = document.querySelector('#get-username').innerHTML;
 
 
                 socket.on('connect', function() {
@@ -111,20 +122,111 @@
                    */
                    //alert("The session id is " + socket.id)
 
+
                    if (data.thisEvent == 'joined') {
                       dingdong()
                    } else {
                       playSystemAlert()
                    }
 
-                   /*
+
                    add_post(data.sender,  data.msg, data.vClass)
 
+                   /*
                    var y = document.querySelector('#posts').scrollHeight;
                    document.querySelector('#posts').scrollTop = document.querySelector('#posts').scrollTop + y
                    */
 
+
+        /*
+        const p = document.createElement('p');
+        p.setAttribute("class", "system-msg");
+        p.innerHTML = data.msg;
+        document.querySelector('#display-message-section').append(p);
+        */
+
+        scrollDownChatWindow()
+
+        // Autofocus on text box
+        document.querySelector("#text").focus();
+
+
+
+
+
                 });
+
+
+
+    // Display all incoming messages
+    socket.on('BACKUP_message', data => {
+
+        // Display current message
+        if (data.msg) {
+            const p = document.createElement('p');
+            const span_username = document.createElement('span');
+            const span_timestamp = document.createElement('span');
+            const br = document.createElement('br')
+
+            /*
+            var today = new Date();
+            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var dateTime = date+' '+time;
+
+            const offset = today.getTimezoneOffset();
+            var today = new Date(today.getTime() - (offset*60*1000));
+            today = today.toISOString().split('T')[0] + " " + today.toISOString().split('T')[1]
+            */
+
+            // Display user's own message
+            if (data.thisUser == username) {
+                    p.setAttribute("class", "my-msg");
+
+                    // Username
+                    span_username.setAttribute("class", "my-username");
+                    span_username.innerText = data.thisUser;
+
+                    // Timestamp
+                    span_timestamp.setAttribute("class", "timestamp");
+                    //span_timestamp.innerText = data.time_stamp;
+                    span_timestamp.innerText = formatTime();
+
+                    // HTML to append
+                    p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML
+
+                    //Append
+                    document.querySelector('#display-message-section').append(p);
+            }
+            // Display other users' messages
+            else if (typeof data.thisUser !== 'undefined') {
+                p.setAttribute("class", "others-msg");
+
+                // Username
+                span_username.setAttribute("class", "other-username");
+                span_username.innerText = data.thisUser;
+
+                // Timestamp
+                span_timestamp.setAttribute("class", "timestamp");
+                span_timestamp.innerText = data.time_stamp;
+
+                // HTML to append
+                p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML;
+
+                //Append
+                document.querySelector('#display-message-section').append(p);
+            }
+            // Display system message
+            else {
+                printSysMsg(data.msg);
+            }
+
+
+        }
+        scrollDownChatWindow();
+    });
+
+
 
 
                 socket.on('message', data => {
@@ -149,9 +251,13 @@
                       add_post(data.thisUser,  data.msg, "receiver")
                    }
 
-                   var y = document.querySelector('#posts').scrollHeight;
-                   document.querySelector('#posts').scrollTop = document.querySelector('#posts').scrollTop + y
+                   //var y = document.querySelector('#posts').scrollHeight;
+                   //document.querySelector('#posts').scrollTop = document.querySelector('#posts').scrollTop + y
 
+        scrollDownChatWindow()
+
+        // Autofocus on text box
+        document.querySelector("#text").focus();
 
 
                 });
@@ -218,17 +324,19 @@
                 });
             }
 
-            /*
-            const post_template = Handlebars.compile(document.querySelector('#post').innerHTML);
+
+
             function add_post(who, contents, vClass) {
+                const post_template = Handlebars.compile(document.querySelector('#post').innerHTML);
 
                 // Create new post."
                 const post = post_template({'who': who, 'contents': contents, "vClass": vClass});
 
                 // Add post to DOM.
-                document.querySelector('#posts').innerHTML += post;
+                //document.querySelector('#posts').innerHTML += post;
+                document.querySelector('#display-message-section').append(post_template);
             }
-            */
+
 
     function ding() {
         var sound = new Audio("/static/chime_up.wav");
@@ -253,14 +361,38 @@
     }
 
 
+    function formatTime() {
+                var today = new Date();
+
+                var thisYear = today.getFullYear()
+                var thisMonth = today.getMonth()+1
+                thisMonth = (thisMonth < 10 ? '0' : '') +  thisMonth;
+                var thisDay = (today.getDate() < 10 ? '0' : '') +  today.getDate();
+                var date = thisYear +'- '+ thisMonth + '-' + thisDay;
+
+                var hours = today.getHours();
+                var minutes = today.getMinutes();
+
+                // Check whether AM or PM
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+
+                // Find current hour in AM-PM Format
+                hours = hours % 12;
+
+                // To display "0" as "12"
+                hours = hours ? hours : 12;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+
+                return  date + " " + hours + ':' + minutes + ' ' + ampm;
+            }
+
+    // Scroll chat window down
+    function scrollDownChatWindow() {
+        const chatWindow = document.querySelector("#display-message-section");
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
 
         </script>
-
-
-
-
-
-
 
 
 
@@ -371,7 +503,7 @@
         <!-- Wrapper end -->
 
         <!-- Get username -->
-        <span id="get-username">{{ username }}</span>
+        <span id="get-username">{{ name }}</span>
 
         <!-- Custom chat JS -->
         <!-- <script src="{{ url_for('static', filename='scripts/chat_page.js') }}"></script> -->
