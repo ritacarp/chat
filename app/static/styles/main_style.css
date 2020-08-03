@@ -60,11 +60,7 @@ h2 {
     }
 }
 
-@media (min-width: 1000px) {
-    #righthand-side {
-        max-width: 50%;
-    }
-}
+
 
 .formError {
     list-style-type:none;
