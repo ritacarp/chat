@@ -1,7 +1,10 @@
 <html>
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="/static/Fasticon-Avartar-Girls-Girl-8.ico" rel="icon">
 
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles.css') }}">
@@ -15,6 +18,13 @@
 
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+        <!-- Font Awesome JS -->
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
+    </body>
+</html>
+
 
         <script id="post" type="text/x-handlebars-template">
             <div class="polaroid">
@@ -234,6 +244,13 @@
                 });
 
 
+    // Make sidebar collapse on click
+    document.querySelector('#show-sidebar-button').onclick = () => {
+        document.querySelector('#sidebar').classList.toggle('view-sidebar');
+    };
+
+
+
 
                /*
                add_post('rita',  'this is post 1', 'sender')
@@ -346,9 +363,6 @@
 
 
             <span style="font-weight:bold"><span class="text-primary">R</span><span class="text-danger">I</span><span style="color:gold">T</span><span class="text-success">A</span> <span class="text-danger">Chats</span></span>
-            <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
-                <span class="navbar-toggler-icon"></span>
-            </button>
 
             <div class="collapse navbar-collapse" id="navbar">
                 {% if name and name != ""  %}
